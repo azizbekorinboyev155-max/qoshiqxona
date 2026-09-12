@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qo'shiqxona · Listening bilan ingliz tili</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12141f;
+    --bg-alt:#1b1f2f;
+    --bg-alt2:#232842;
+    --text:#ece7da;
+    --text-dim:#9a9fb0;
+    --accent:#ffb84d;
+    --accent-2:#6fd6c4;
+    --danger:#ff6b6b;
+    --border:rgba(255,255,255,0.08);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  h1,h2,h3, .brand, .btn, label, .tag{
+    font-family:'Space Grotesk', sans-serif;
+  }
+  a{color:inherit;}
+  .wrap{
+    max-width:980px;
+    margin:0 auto;
+    padding:0 24px 80px;
+  }
+  header.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:26px 0 18px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:40px;
+  }
+  .brand{
+    font-weight:700;
+    font-size:1.15rem;
+    letter-spacing:0.2px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .dot{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px rgba(255,184,77,0.15);
+  }
+  .btn{
+    border:1px solid var(--border);
+    background:var(--bg-alt);
+    color:var(--text);
+    padding:10px 18px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:0.92rem;
+    cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .btn:hover{border-color:var(--accent); transform:translateY(-1px);}
+  .btn.primary{
+    background:var(--accent);
+    color:#1c1406;
+    border-color:var(--accent);
+  }
+  .btn.primary:hover{filter:brightness(1.06);}
+  .btn.ghost{background:transparent;}
+  .btn.small{padding:7px 14px; font-size:0.82rem;}
+  .btn.danger{color:var(--danger); border-color:rgba(255,107,107,0.3);}
+
+  .hero{
+    padding:10px 0 46px;
+  }
+  .hero h1{
+    font-size:2.5rem;
+    line-height:1.15;
+    font-weight:700;
+    max-width:640px;
+    margin:0 0 16px;
+  }
+  .hero p{
+    color:var(--text-dim);
+    max-width:520px;
+    font-size:1.02rem;
+    margin:0 0 26px;
+  }
+
+  section.lib h2{
+    font-size:1.15rem;
+    font-weight:600;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:14px;
+    margin-bottom:56px;
+  }
+  .card{
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px;
+    cursor:pointer;
+    position:relative;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--accent-2); transform:translateY(-2px);}
+  .card .kind{
+    display:inline-block;
+    font-size:0.72rem;
+    color:var(--accent-2);
+    border:1px solid rgba(111,214,196,0.35);
+    padding:2px 8px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .card h3{
+    margin:0 0 4px;
+    font-size:1.02rem;
+    font-weight:600;
+  }
+  .card .artist{
+    color:var(--text-dim);
+    font-size:0.86rem;
+    margin-bottom:10px;
+  }
+  .card .best{
+    font-size:0.8rem;
+    color:var(--text-dim);
+  }
+  .card .del{
+    position:absolute;
+    top:12px; right:12px;
+    background:none;
+    border:none;
+    color:var(--text-dim);
+    cursor:pointer;
+    font-size:0.95rem;
+    opacity:0.6;
+  }
+  .card .del:hover{color:var(--danger); opacity:1;}
+  .empty-note{
+    color:var(--text-dim);
+    border:1px dashed var(--border);
+    border-radius:var(--radius);
+    padding:26px;
+    text-align:center;
+    font-size:0.92rem;
+  }
+
+  /* Modal */
+  .modal-backdrop{
+    position:fixed; inset:0;
+    background:rgba(8,9,14,0.7);
+    display:none;
+    align-items:flex-start;
+    justify-content:center;
+    padding:40px 16px;
+    overflow-y:auto;
+    z-index:50;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal{
+    background:var(--bg-alt2);
+    border:1px solid var(--border);
+    border-radius:18px;
+    max-width:560px;
+    width:100%;
+    padding:28px;
+  }
+  .modal h2{margin-top:0;}
+  .field{margin-bottom:16px;}
+  .field label{
+    display:block;
+    font-size:0.82rem;
+    color:var(--text-dim);
+    margin-bottom:6px;
+    font-weight:600;
+  }
+  input[type=text], input[type=file], textarea, select{
+    width:100%;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 12px;
+    color:var(--text);
+    font-family:'Manrope', sans-serif;
+    font-size:0.94rem;
+  }
+  textarea{resize:vertical; min-height:120px;}
+  .row{display:flex; gap:10px;}
+  .row > *{flex:1;}
+  .source-toggle{
+    display:flex;
+    gap:8px;
+    margin-bottom:14px;
+  }
+  .source-toggle button{
+    flex:1;
+  }
+  .source-toggle button.active{
+    background:var(--accent-2);
+    color:#062521;
+    border-color:var(--accent-2);
+  }
+  .lyrics-fetch-row{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    margin-bottom:8px;
+  }
+  .modal-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:18px;
+  }
+  .hint{font-size:0.78rem; color:var(--text-dim); margin-top:6px;}
+  .status-msg{font-size:0.82rem; margin-top:6px;}
+  .status-msg.err{color:var(--danger);}
+  .status-msg.ok{color:var(--accent-2);}
+
+  /* Player */
+  #player-section{
+    display:none;
+    border-top:1px solid var(--border);
+    padding-top:36px;
+  }
+  #player-section.open{display:block;}
+  .player-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:20px;
+  }
+  .player-head h2{margin:0 0 4px; font-size:1.4rem;}
+  .player-head .artist{color:var(--text-dim);}
+  .player-controls{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  #media-holder{margin-bottom:22px;}
+  #media-holder audio{width:100%;}
+  #yt-player-container{
+    position:relative;
+    width:100%;
+    max-width:480px;
+    aspect-ratio:16/9;
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  #yt-player-container iframe{width:100%; height:100%;}
+
+  .lyrics-box{
+    background:var(--bg-alt);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:26px 28px;
+    font-size:1.08rem;
+  }
+  .sync-panel{
+    display:none;
+    background:var(--bg-alt2);
+    border:1px solid var(--accent-2);
+    border-radius:var(--radius);
+    padding:18px 20px;
+    margin-bottom:18px;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .sync-panel.open{display:flex;}
+  .sync-panel .sync-line{
+    font-size:1rem;
+    color:var(--text-dim);
+  }
+  .sync-panel .sync-progress{
+    font-size:0.8rem;
+    color:var(--accent-2);
+    margin-bottom:4px;
+  }
+  .sync-actions{display:flex; gap:8px;}
+  .lyric-line{
+    margin:0 0 12px;
+    padding:5px 10px;
+    border-radius:8px;
+    transition:background .25s ease, color .25s ease;
+    color:var(--text-dim);
+  }
+  .lyric-line.active{
+    background:rgba(255,184,77,0.12);
+    color:var(--text);
+  }
+  .lyric-line input{
+    width:auto;
+    display:inline-block;
+    background:var(--bg);
+    border:1px solid var(--border);
+    border-bottom:2px solid var(--accent-2);
+    border-radius:6px;
+    padding:2px 6px;
+    margin:0 2px;
+    font-size:0.98rem;
+    color:var(--text);
+    text-align:center;
+  }
+  .lyric-line input.correct{border-bottom-color:var(--accent-2); background:rgba(111,214,196,0.12);}
+  .lyric-line input.incorrect{border-bottom-color:var(--danger); background:rgba(255,107,107,0.12);}
+
+  .result-bar{
+    margin-top:20px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .score{font-weight:700; font-size:1.05rem;}
+
+  footer{
+    margin-top:60px;
+    color:var(--text-dim);
+    font-size:0.82rem;
+    text-align:center;
+  }
+
+  @media (max-width:600px){
+    .hero h1{font-size:1.9rem;}
+    .lyrics-box{padding:18px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><span class="dot"></span> Qo'shiqxona</div>
+    <button class="btn primary" id="open-add-modal">+ Qo'shiq qo'shish</button>
+  </header>
+
+  <section class="hero">
+    <h1>Qo'shiqni tingla, bo'shliqlarni to'ldir.</h1>
+    <p>O'zing xohlagan qo'shiqlarni qo'shib, ularning matnidagi so'zlarni tinglab topasan. Listening ko'nikmangni shu tariqa mustahkamlaysan — o'zingga kerakli qo'shiqlar bilan.</p>
+  </section>
+
+  <section class="lib">
+    <h2>Mening kutubxonam <span id="song-count" style="color:var(--text-dim); font-weight:400; font-size:0.85rem;"></span></h2>
+    <div class="grid" id="song-grid"></div>
+  </section>
+
+  <section id="player-section">
+    <div class="player-head">
+      <div>
+        <h2 id="p-title"></h2>
+        <div class="artist" id="p-artist"></div>
+      </div>
+      <div class="player-controls">
+        <label class="hint" style="margin:0;">Qiyinlik:
+          <select id="difficulty" style="width:auto; display:inline-block; margin-left:6px;">
+            <option value="0.15">Oson</option>
+            <option value="0.25" selected>O'rta</option>
+            <option value="0.4">Qiyin</option>
+          </select>
+        </label>
+        <button class="btn small" id="regen-btn">Qayta yaratish</button>
+        <button class="btn small" id="sync-btn">Sinxronlash</button>
+        <button class="btn small" id="check-btn">Tekshirish</button>
+        <button class="btn small ghost" id="close-player-btn">Yopish</button>
+      </div>
+    </div>
+
+    <div id="media-holder"></div>
+
+    <div class="sync-panel" id="sync-panel">
+      <div>
+        <div class="sync-progress" id="sync-progress"></div>
+        <div class="sync-line" id="sync-line-text"></div>
+      </div>
+      <div class="sync-actions">
+        <button class="btn small ghost" id="sync-cancel-btn">Bekor qilish</button>
+        <button class="btn small primary" id="sync-mark-btn">Shu qator boshlandi</button>
+      </div>
+    </div>
+
+    <div class="lyrics-box" id="lyrics-box"></div>
+
+    <div class="result-bar" id="result-bar" style="display:none;">
+      <span class="score" id="score-text"></span>
+    </div>
+  </section>
+
+  <footer>Shaxsiy loyiha · o'zing uchun qurilgan listening mashqi</footer>
+</div>
+
+<!-- Add song modal -->
+<div class="modal-backdrop" id="add-modal">
+  <div class="modal">
+    <h2>Yangi qo'shiq</h2>
+
+    <div class="field">
+      <label>Qo'shiq nomi</label>
+      <input type="text" id="f-title" placeholder="Masalan: Yesterday">
+    </div>
+    <div class="field">
+      <label>Ijrochi</label>
+      <input type="text" id="f-artist" placeholder="Masalan: The Beatles">
+    </div>
+
+    <div class="field">
+      <label>Manba turi</label>
+      <div class="source-toggle">
+        <button type="button" class="btn active" id="tab-youtube" onclick="setSourceTab('youtube')">YouTube havolasi</button>
+        <button type="button" class="btn" id="tab-mp3" onclick="setSourceTab('mp3')">MP3 fayl</button>
+      </div>
+    </div>
+
+    <div class="field" id="field-youtube">
+      <label>YouTube havolasi yoki ID</label>
+      <input type="text" id="f-youtube" placeholder="https://www.youtube.com/watch?v=...">
+    </div>
+    <div class="field" id="field-mp3" style="display:none;">
+      <label>MP3 fayl</label>
+      <input type="file" id="f-mp3" accept="audio/*">
+      <div class="hint">Katta fayllar brauzer xotirasiga sig'masligi mumkin — uzun qo'shiqlar uchun YouTube havolasi tavsiya etiladi.</div>
+    </div>
+
+    <div class="field">
+      <label>Qo'shiq matni (lyrics)</label>
+      <div class="lyrics-fetch-row">
+        <button class="btn small" id="fetch-lyrics-btn" type="button">Avtomatik qidirish</button>
+      </div>
+      <textarea id="f-lyrics" placeholder="Matnni shu yerga joylashtiring yoki 'Avtomatik qidirish' tugmasini bosing."></textarea>
+      <div class="status-msg" id="lyrics-status"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn ghost" id="cancel-add">Bekor qilish</button>
+      <button class="btn primary" id="save-song">Saqlash</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------- Storage ---------- */
+const STORAGE_KEY = 'qoshiqxona_songs_v1';
+
+function loadSongs(){
+  try{
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  }catch(e){ return []; }
+}
+function saveSongs(songs){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(songs));
+    return true;
+  }catch(e){
+    alert("Xotira to'lib qoldi. Katta MP3 fayllar o'rniga YouTube havolasidan foydalaning.");
+    return false;
+  }
+}
+
+let songs = loadSongs();
+
+/* ---------- Rendering library ---------- */
+function renderLibrary(){
+  const grid = document.getElementById('song-grid');
+  const count = document.getElementById('song-count');
+  grid.innerHTML = '';
+  count.textContent = songs.length ? `(${songs.length})` : '';
+
+  if(songs.length === 0){
+    grid.innerHTML = `<div class="empty-note" style="grid-column:1/-1;">Hali qo'shiq yo'q. Yuqoridagi "+ Qo'shiq qo'shish" tugmasini bosib birinchisini qo'sh.</div>`;
+    return;
+  }
+
+  songs.forEach((s, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = (e) => {
+      if(e.target.classList.contains('del')) return;
+      openPlayer(idx);
+    };
+    card.innerHTML = `
+      <button class="del" title="O'chirish">✕</button>
+      <span class="kind">${s.type === 'youtube' ? 'YouTube' : 'MP3'}</span>
+      <h3>${escapeHtml(s.title)}</h3>
+      <div class="artist">${escapeHtml(s.artist || '')}</div>
+      <div class="best">${s.bestScore ? `Eng yaxshi natija: ${s.bestScore}` : 'Hali sinalmagan'}</div>
+    `;
+    card.querySelector('.del').onclick = () => {
+      if(confirm(`"${s.title}" o'chirilsinmi?`)){
+        songs.splice(idx,1);
+        saveSongs(songs);
+        renderLibrary();
+      }
+    };
+    grid.appendChild(card);
+  });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ---------- Add song modal ---------- */
+const addModal = document.getElementById('add-modal');
+document.getElementById('open-add-modal').onclick = () => {
+  resetForm();
+  addModal.classList.add('open');
+};
+document.getElementById('cancel-add').onclick = () => addModal.classList.remove('open');
+
+let currentSourceTab = 'youtube';
+function setSourceTab(tab){
+  currentSourceTab = tab;
+  document.getElementById('tab-youtube').classList.toggle('active', tab==='youtube');
+  document.getElementById('tab-mp3').classList.toggle('active', tab==='mp3');
+  document.getElementById('field-youtube').style.display = tab==='youtube' ? '' : 'none';
+  document.getElementById('field-mp3').style.display = tab==='mp3' ? '' : 'none';
+}
+
+function resetForm(){
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-artist').value = '';
+  document.getElementById('f-youtube').value = '';
+  document.getElementById('f-mp3').value = '';
+  document.getElementById('f-lyrics').value = '';
+  document.getElementById('lyrics-status').textContent = '';
+  setSourceTab('youtube');
+}
+
+document.getElementById('fetch-lyrics-btn').onclick = async () => {
+  const title = document.getElementById('f-title').value.trim();
+  const artist = document.getElementById('f-artist').value.trim();
+  const statusEl = document.getElementById('lyrics-status');
+  if(!title || !artist){
+    statusEl.textContent = "Avval qo'shiq nomi va ijrochini kiriting.";
+    statusEl.className = 'status-msg err';
+    return;
+  }
+  statusEl.textContent = 'Qidirilmoqda...';
+  statusEl.className = 'status-msg';
+  try{
+    const res = await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
+    if(!res.ok) throw new Error('not found');
+    const data = await res.json();
+    if(!data.lyrics) throw new Error('empty');
+    document.getElementById('f-lyrics').value = data.lyrics.trim();
+    statusEl.textContent = 'Matn topildi. Kerak bo\'lsa tahrirlab qo\'ying.';
+    statusEl.className = 'status-msg ok';
+  }catch(e){
+    statusEl.textContent = "Topilmadi — matnni qo'lda joylashtiring.";
+    statusEl.className = 'status-msg err';
+  }
+};
+
+document.getElementById('save-song').onclick = async () => {
+  const title = document.getElementById('f-title').value.trim();
+  const artist = document.getElementById('f-artist').value.trim();
+  const lyrics = document.getElementById('f-lyrics').value.trim();
+
+  if(!title || !lyrics){
+    alert("Qo'shiq nomi va matnini kiriting.");
+    return;
+  }
+
+  const song = { title, artist, lyrics, bestScore: null };
+
+  if(currentSourceTab === 'youtube'){
+    const raw = document.getElementById('f-youtube').value.trim();
+    const id = extractYouTubeId(raw);
+    if(!id){
+      alert("YouTube havolasi noto'g'ri ko'rinadi.");
+      return;
+    }
+    song.type = 'youtube';
+    song.src = id;
+    songs.push(song);
+    if(saveSongs(songs)){ addModal.classList.remove('open'); renderLibrary(); }
+  } else {
+    const file = document.getElementById('f-mp3').files[0];
+    if(!file){
+      alert('MP3 faylni tanlang.');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      song.type = 'mp3';
+      song.src = reader.result;
+      songs.push(song);
+      if(saveSongs(songs)){ addModal.classList.remove('open'); renderLibrary(); }
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+function extractYouTubeId(input){
+  input = (input || '').trim();
+  if(/^[\w-]{11}$/.test(input)) return input;
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=)([\w-]{11})/,
+    /(?:youtu\.be\/)([\w-]{11})/,
+    /(?:youtube\.com\/embed\/)([\w-]{11})/,
+    /(?:youtube\.com\/shorts\/)([\w-]{11})/
+  ];
+  for(const p of patterns){
+    const m = input.match(p);
+    if(m) return m[1];
+  }
+  return null;
+}
+
+/* ---------- YouTube API ---------- */
+let ytApiReady = false;
+let pendingYouTubeInit = null;
+let ytPlayer = null;
+
+function loadYouTubeAPI(){
+  if(window.YT && window.YT.Player){ ytApiReady = true; return; }
+  const tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  document.head.appendChild(tag);
+}
+window.onYouTubeIframeAPIReady = function(){
+  ytApiReady = true;
+  if(pendingYouTubeInit){ pendingYouTubeInit(); pendingYouTubeInit = null; }
+};
+loadYouTubeAPI();
+
+/* ---------- Player ---------- */
+let currentSongIndex = null;
+let currentLineCount = 0;
+let currentLines = [];
+let highlightTimer = null;
+let mediaControls = null; // { getCurrentTime, getDuration, play, pause, seek }
+
+function openPlayer(idx){
+  currentSongIndex = idx;
+  const s = songs[idx];
+  document.getElementById('p-title').textContent = s.title;
+  document.getElementById('p-artist').textContent = s.artist || '';
+  document.getElementById('player-section').classList.add('open');
+  document.getElementById('result-bar').style.display = 'none';
+  cancelSync();
+
+  setupMedia(s);
+  buildGaps();
+
+  document.getElementById('player-section').scrollIntoView({behavior:'smooth'});
+}
+
+function setupMedia(s){
+  const holder = document.getElementById('media-holder');
+  holder.innerHTML = '';
+  if(highlightTimer){ clearInterval(highlightTimer); highlightTimer = null; }
+  ytPlayer = null;
+
+  if(s.type === 'mp3'){
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    audio.src = s.src;
+    holder.appendChild(audio);
+    mediaControls = {
+      getDuration: () => audio.duration,
+      getCurrentTime: () => audio.currentTime,
+      play: () => audio.play(),
+      pause: () => audio.pause(),
+      seek: (t) => { audio.currentTime = t; }
+    };
+    startHighlightLoop();
+  } else {
+    const container = document.createElement('div');
+    container.id = 'yt-player-container';
+    holder.appendChild(container);
+    const innerDiv = document.createElement('div');
+    innerDiv.id = 'yt-player';
+    container.appendChild(innerDiv);
+
+    function create(){
+      ytPlayer = new YT.Player('yt-player', {
+        videoId: s.src,
+        playerVars: { rel: 0 }
+      });
+    }
+    if(ytApiReady) create(); else pendingYouTubeInit = create;
+
+    mediaControls = {
+      getDuration: () => (ytPlayer && typeof ytPlayer.getDuration === 'function') ? ytPlayer.getDuration() : 0,
+      getCurrentTime: () => (ytPlayer && typeof ytPlayer.getCurrentTime === 'function') ? ytPlayer.getCurrentTime() : 0,
+      play: () => { if(ytPlayer && ytPlayer.playVideo) ytPlayer.playVideo(); },
+      pause: () => { if(ytPlayer && ytPlayer.pauseVideo) ytPlayer.pauseVideo(); },
+      seek: (t) => { if(ytPlayer && ytPlayer.seekTo) ytPlayer.seekTo(t, true); }
+    };
+    startHighlightLoop();
+  }
+}
+
+function startHighlightLoop(){
+  highlightTimer = setInterval(() => {
+    if(syncMode || !mediaControls || currentLineCount === 0) return;
+    const cur = mediaControls.getCurrentTime();
+    const s = songs[currentSongIndex];
+    let targetLine = -1;
+
+    if(s.timestamps && s.timestamps.length === currentLineCount){
+      for(let i = 0; i < s.timestamps.length; i++){
+        if(cur >= s.timestamps[i]) targetLine = i;
+      }
+    } else {
+      const dur = mediaControls.getDuration();
+      if(!dur || isNaN(dur) || dur <= 0) return;
+      const ratio = Math.min(Math.max(cur / dur, 0), 0.999);
+      targetLine = Math.floor(ratio * currentLineCount);
+    }
+
+    document.querySelectorAll('.lyric-line').forEach((el, i) => {
+      el.classList.toggle('active', i === targetLine);
+    });
+  }, 400);
+}
+
+/* ---------- Manual sync ---------- */
+let syncMode = false;
+let syncIndex = 0;
+let syncTimestamps = [];
+
+document.getElementById('sync-btn').onclick = () => {
+  if(currentLineCount === 0 || !mediaControls) return;
+  syncMode = true;
+  syncIndex = 0;
+  syncTimestamps = [];
+  document.getElementById('sync-panel').classList.add('open');
+  updateSyncPanel();
+  mediaControls.seek(0);
+  mediaControls.play();
+};
+
+document.getElementById('sync-cancel-btn').onclick = () => cancelSync();
+
+document.getElementById('sync-mark-btn').onclick = () => {
+  if(!syncMode) return;
+  syncTimestamps.push(mediaControls.getCurrentTime());
+  syncIndex++;
+  if(syncIndex >= currentLineCount){
+    const s = songs[currentSongIndex];
+    s.timestamps = syncTimestamps;
+    saveSongs(songs);
+    mediaControls.pause();
+    cancelSync();
+  } else {
+    updateSyncPanel();
+  }
+};
+
+function updateSyncPanel(){
+  document.getElementById('sync-progress').textContent = `${syncIndex + 1} / ${currentLineCount}-qator`;
+  document.getElementById('sync-line-text').textContent = currentLines[syncIndex] || '';
+}
+
+function cancelSync(){
+  syncMode = false;
+  syncIndex = 0;
+  syncTimestamps = [];
+  const panel = document.getElementById('sync-panel');
+  if(panel) panel.classList.remove('open');
+}
+
+document.getElementById('close-player-btn').onclick = () => {
+  document.getElementById('player-section').classList.remove('open');
+  if(highlightTimer){ clearInterval(highlightTimer); highlightTimer = null; }
+  cancelSync();
+};
+
+document.getElementById('regen-btn').onclick = () => buildGaps();
+
+function buildGaps(){
+  const s = songs[currentSongIndex];
+  const density = parseFloat(document.getElementById('difficulty').value);
+  const lines = s.lyrics.split('\n').filter(l => l.trim().length > 0);
+  currentLineCount = lines.length;
+  currentLines = lines;
+
+  const box = document.getElementById('lyrics-box');
+  box.innerHTML = '';
+
+  lines.forEach(line => {
+    const p = document.createElement('p');
+    p.className = 'lyric-line';
+    const tokens = line.split(/(\s+|[.,!?;:"'()]+)/).filter(t => t !== '');
+
+    tokens.forEach(tok => {
+      const isWord = /^[A-Za-z']+$/.test(tok);
+      if(isWord && tok.length >= 3 && Math.random() < density){
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.size = Math.max(tok.length, 3);
+        input.dataset.answer = tok.toLowerCase();
+        input.autocomplete = 'off';
+        input.spellcheck = false;
+        p.appendChild(input);
+      } else {
+        p.appendChild(document.createTextNode(tok));
+      }
+    });
+
+    box.appendChild(p);
+  });
+
+  document.getElementById('result-bar').style.display = 'none';
+}
+
+document.getElementById('check-btn').onclick = () => {
+  const inputs = document.querySelectorAll('.lyrics-box input');
+  let correct = 0;
+  inputs.forEach(inp => {
+    const val = inp.value.trim().toLowerCase();
+    const ok = val === inp.dataset.answer;
+    inp.classList.remove('correct','incorrect');
+    inp.classList.add(ok ? 'correct' : 'incorrect');
+    if(ok) correct++;
+  });
+  const total = inputs.length;
+  document.getElementById('score-text').textContent = `Natija: ${correct}/${total} to'g'ri`;
+  document.getElementById('result-bar').style.display = 'flex';
+
+  if(total > 0){
+    const pct = Math.round((correct/total)*100);
+    const s = songs[currentSongIndex];
+    if(s.bestScore === null || pct > s.bestScore){
+      s.bestScore = pct + '%';
+      saveSongs(songs);
+      renderLibrary();
+    }
+  }
+};
+
+/* ---------- Init ---------- */
+renderLibrary();
+</script>
+</body>
+</html>
